@@ -4,7 +4,7 @@
 - PHP 8
 - Laravel Octane with Swoole
 - Redis
-- PostgreSQL
+- SQL Server
 
 Supercronic для запуска задач по расписанию.
 
@@ -15,7 +15,7 @@ Supercronic для запуска задач по расписанию.
 Dockerfile самого приложения может выглядеть так:
 
 ```dockerfile
-FROM epalshin/marabel:latest
+FROM epalshin/scarlett:latest
 
 # copy start container script
 COPY ./docker/start-container /usr/local/bin/start-container
