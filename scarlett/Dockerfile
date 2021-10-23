@@ -58,4 +58,4 @@ RUN set -x \
         --gecos "" \
         "appuser"
 
-COPY ./php.ini ${PHP_INI_DIR}/conf.d/88-marabel.ini
+COPY ./php.ini ${PHP_INI_DIR}/conf.d/88-scarlett.ini
