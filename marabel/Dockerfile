@@ -1,10 +1,10 @@
-LABEL org.opencontainers.image.authors="eo.palshin@gmail.com"
-
 FROM alpine:3.13 AS iconv-build
 RUN apk add --no-cache gnu-libiconv
 
 # build application runtime, image page: <https://hub.docker.com/_/php>
 FROM php:8.0.12-cli-alpine
+
+LABEL org.opencontainers.image.authors="eo.palshin@gmail.com"
 
 # fix iconv issue <https://github.com/docker-library/php/issues/1121>
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
