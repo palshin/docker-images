@@ -11,17 +11,18 @@ COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_li
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # install composer, image page: <https://hub.docker.com/_/composer>
-COPY --from=composer:2.1.9 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.3.2 /usr/bin/composer /usr/bin/composer
 
 # install install-php-extensions tool, docs: <https://github.com/mlocati/docker-php-extension-installer>
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-ENV COMPOSER_HOME="/tmp/composer" \
-  TZ=UTC \
-  PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
-  PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
-  PHP_OPCACHE_MEMORY_CONSUMPTION="350" \
-  PHP_OPCACHE_MAX_WASTED_PERCENTAGE="15"
+ENV HOME="/tmp/home" \
+    COMPOSER_HOME="/tmp/composer" \
+    TZ=UTC \
+    PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="350" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="15"
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -29,8 +30,8 @@ RUN set -x \
     # install permanent dependencies
     && apk add --no-cache postgresql-libs icu-libs npm git \
     && apk add --no-cache --virtual .build-deps postgresql-dev autoconf openssl make g++ \
-    && install-php-extensions swoole pdo_pgsql opcache \
-        pcntl intl gd zip bcmath exif redis 1>/dev/null \
+    && install-php-extensions swoole pdo_pgsql opcache xdebug \
+        pcntl intl gd zip bcmath exif redis amqp 1>/dev/null \
     # make clean up
     && docker-php-source delete \
     && apk del .build-deps \
@@ -51,4 +52,4 @@ WORKDIR /app
 
 USER appuser:appuser
 
-ENTRYPOINT [ "php" ]
+ENTRYPOINT [ "/usr/local/bin/php" ]
