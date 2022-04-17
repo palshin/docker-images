@@ -28,10 +28,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN set -x \
     # install permanent dependencies
-    && apk add --no-cache postgresql-libs icu-libs npm git \
+    && apk add --no-cache postgresql-libs icu-libs npm git sqlite \
     && apk add --no-cache --virtual .build-deps postgresql-dev autoconf openssl make g++ \
     && install-php-extensions swoole pdo_pgsql opcache \
-        pcntl intl gd zip bcmath exif redis amqp 1>/dev/null \
+    pcntl intl gd zip bcmath exif redis amqp 1>/dev/null \
     # make clean up
     && docker-php-source delete \
     && apk del .build-deps \
@@ -40,11 +40,11 @@ RUN set -x \
     && php -m \
     # create unprivileged user
     && adduser \
-        --disabled-password \
-        --shell "/sbin/nologin" \
-        --uid "10001" \
-        --gecos "" \
-        "appuser"
+    --disabled-password \
+    --shell "/sbin/nologin" \
+    --uid "10001" \
+    --gecos "" \
+    "appuser"
 
 COPY ./php.ini ${PHP_INI_DIR}/conf.d/88-abigail.ini
 
