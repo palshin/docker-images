@@ -28,7 +28,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN set -x \
     # install permanent dependencies
-    && apk add --no-cache postgresql-libs icu-libs npm git sqlite \
+    && apk add --no-cache postgresql-libs icu-libs npm git sqlite sqlite-dev \
     && apk add --no-cache --virtual .build-deps postgresql-dev autoconf openssl make g++ \
     && install-php-extensions swoole pdo_pgsql opcache \
     pcntl intl gd zip bcmath exif redis amqp 1>/dev/null \
