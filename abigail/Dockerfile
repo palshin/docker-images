@@ -48,8 +48,4 @@ RUN set -x \
 
 COPY ./php.ini ${PHP_INI_DIR}/conf.d/88-abigail.ini
 
-WORKDIR /app
-
-USER appuser:appuser
-
 ENTRYPOINT [ "/usr/local/bin/php" ]
