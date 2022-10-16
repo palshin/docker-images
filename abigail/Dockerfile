@@ -2,16 +2,16 @@ FROM alpine:3.13 AS iconv-build
 RUN apk add --no-cache gnu-libiconv
 
 # build application runtime, image page: <https://hub.docker.com/_/php>
-FROM php:8.1-cli-alpine
+FROM php:8.1-cli-alpine3.16
 
-LABEL org.opencontainers.image.authors="eo.palshin@gmail.com"
+LABEL org.opencontainers.image.authors="i@epalshin.ru"
 
 # fix iconv issue <https://github.com/docker-library/php/issues/1121>
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 # install composer, image page: <https://hub.docker.com/_/composer>
-COPY --from=composer:2.3.2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.4.2 /usr/bin/composer /usr/bin/composer
 
 # install install-php-extensions tool, docs: <https://github.com/mlocati/docker-php-extension-installer>
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
