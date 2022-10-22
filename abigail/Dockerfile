@@ -32,6 +32,11 @@ RUN set -x \
     && apk add --no-cache --virtual .build-deps postgresql-dev autoconf openssl make g++ \
     && install-php-extensions swoole pdo_pgsql pdo_mysql opcache \
     pcntl intl gd zip bcmath exif redis amqp 1>/dev/null \
+    # install supercronic (for laravel task scheduling), project page: <https://github.com/aptible/supercronic>
+	&& wget -q "https://github.com/aptible/supercronic/releases/download/v0.1.12/supercronic-linux-amd64" \
+		 -O /usr/bin/supercronic \
+	&& chmod +x /usr/bin/supercronic \
+	&& mkdir /etc/supercronic \
     # make clean up
     && docker-php-source delete \
     && apk del .build-deps \
